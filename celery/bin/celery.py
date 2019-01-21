@@ -283,7 +283,7 @@ from celery.utils import term, text
 
 #在模块的一开始定义 __all__ 变量，import * 该模块后，只能找到 __all__中存在的类、函数、变量，其他的不能调用
 #__all__ 的数据格式是元组或者列表。
-#CeleryCommand是类，main是函数
+#CeleryCommand是类，main是函数.
 __all__ = ('CeleryCommand', 'main')
 
 #经过在linux验证{commands}是变量，{prog_name} 也是变量
