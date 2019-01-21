@@ -255,6 +255,7 @@ in any command that also has a `--detach` option.
 """
 from __future__ import absolute_import, print_function, unicode_literals
 
+#numbers模块定义了数字抽象基类的层次结构，逐渐定义更多的操作。该模块中定义的任何类型都不能实例化
 import numbers
 import sys
 from functools import partial
@@ -280,8 +281,12 @@ from celery.bin.worker import worker
 from celery.platforms import EX_FAILURE, EX_OK, EX_USAGE
 from celery.utils import term, text
 
+#在模块的一开始定义 __all__ 变量，import * 该模块后，只能找到 __all__中存在的类、函数、变量，其他的不能调用
+#__all__ 的数据格式是元组或者列表。
+#CeleryCommand是类，main是函数
 __all__ = ('CeleryCommand', 'main')
 
+#经过在linux验证{commands}是变量，{prog_name} 也是变量
 HELP = """
 ---- -- - - ---- Commands- -------------- --- ------------
 
@@ -292,21 +297,23 @@ Type '{prog_name} <command> --help' for help using a specific command.
 """
 
 command_classes = [
+    #主要的命令
     ('Main', ['worker', 'events', 'beat', 'shell', 'multi', 'amqp'], 'green'),
+    #远程控制命令
     ('Remote Control', ['status', 'inspect', 'control'], 'blue'),
-    ('Utils',
-     ['purge', 'list', 'call', 'result', 'migrate', 'graph', 'upgrade'],
-     None),
+    #工具命令
+    ('Utils',['purge', 'list', 'call', 'result', 'migrate', 'graph', 'upgrade'],None),
+    #调试命令
     ('Debugging', ['report', 'logtool'], 'red'),
 ]
 
-
+#判断退出状态
 def determine_exit_status(ret):
     if isinstance(ret, numbers.Integral):
         return ret
     return EX_OK if ret else EX_FAILURE
 
-
+#
 def main(argv=None):
     """Start celery umbrella command."""
     # Fix for setuptools generated scripts, so that it will
